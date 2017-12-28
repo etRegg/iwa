@@ -1,0 +1,45 @@
+<div class="container-fluid"><div class="row">
+<div class="col-sm-3 col-md-2 sidebar">
+	<ul class="nav nav-sidebar" >
+
+	<li><a ui-sref="list({ acountId: acount })"
+		ui-sref-active="active">List Contacts</a></li>
+
+	<li><a href="#">Campagning</a> <ul class="nav nav-sidebar">
+
+		<li><a ui-sref="listc"
+			ui-sref-active="active">List Campagning</a></li>
+		
+		<li><a ui-sref="editc"
+			ui-sref-active="active">View/add</a></li>
+		
+		<li><a ui-sref="sent"
+			ui-sref-active="active">Sent Campagning</a></li>
+		</ul></li>
+	</ul>
+</div>
+<div class="col-sm-7 col-md-8 sidebar">
+<h1>{{title}}</h1>
+<ul class="nav navbar-nav navbar-right"><li><a ui-sref="edit" ui-sref-active="active" class="btn">edit</a></li><li><a ng-click="del()" href="#" class="btn" >delete</a></li><li> <a ui-sref="edit" ui-sref-active="active" class="btn">add Contact</a></li></ul>
+<table  class="table table-striped"  >
+  <tr>
+    <th><input type="radio" value="all"></th>
+    <th>Name</th>
+    <th>Mail</th>
+    <th>Phone</th>
+    <th>sex</th>
+    
+  </tr>
+  
+  <tr ng-repeat="(f, person) in persons"  >
+    <td><input type="radio" class="deleteable"   ng-click="select(person)"  ></td>
+    <td>{{person.name}}</td>
+    <td>{{person.mail}}</td>
+    <td>{{person.phone}}</td>
+    <td>{{person.sex}}</td>
+    
+  </tr>
+</table>
+</div>
+</div>
+</div>

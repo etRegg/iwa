@@ -1,0 +1,28 @@
+version: "2"
+services:
+  node1:
+    build: "prototype/"
+    hostname: "node1"
+   
+  
+  
+
+  node2:
+    build: "prototype/"
+    hostname: "node2"
+   
+   
+ 
+   
+
+  balancer:
+    hostname: "balancer.net"
+    image: "nginx"
+    volumes:
+      - ./nginx/:/etc/nginx:ro
+      - ./ssl/:/etc/ssl:ro
+    links:
+        - node1:node1
+        - node2:node2
+
+

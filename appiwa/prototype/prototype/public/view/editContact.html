@@ -1,0 +1,40 @@
+<div class="container-fluid"><div class="row">
+<div class="col-sm-3 col-md-2 sidebar">
+	<lu class="nav nav-sidebar" >
+
+	<li><a ui-sref="list({ acountId: acount })"
+		ui-sref-active="active">List Contacts</a></li>
+
+	<li><a href="#">Campagning</a> <lu class="nav nav-sidebar">
+
+		<li><a ui-sref="listc"
+			ui-sref-active="active">List Campagning</a></li>
+		
+		<li><a ui-sref="editc"
+			ui-sref-active="active">View/add</a></li>
+		
+		<li><a ui-sref="sent"
+			ui-sref-active="active">Sent Campagning</a></li>
+		</lu></li>
+	</lu>
+</div>
+<div class="col-sm-7 col-md-8 sidebar">
+<h1>{{title}}</h1>
+<ul class="nav navbar-nav navbar-right"><li> <a href="#" ng-click="addContact()">add Contact</a></li></ul>
+
+
+<form>
+
+<label class="input-group">Mame: <input class="form-control"  type="text"  ng-model="operationPerson.name" requeride > </label>
+<label class="input-group">Mail: <input class="form-control" type="email" ng-model="operationPerson.mail" requeride > </label>
+<label class="input-group">Phome: <input class="form-control" type="tel"  ng-model="operationPerson.phone" requeride > </label>
+<label class="input-group">Sex: <select class="form-control" ng-model="operationPerson.sex" ><option value="m">m</option><option value="f">f</option></select></label>
+
+<!--  button class="btn" ng-click="addContact()" value="Submit">submit</button>
+<button class="btn" ng-click="cancelContact()" value="cancel"/>cancel</button>
+-->
+</form>
+</div>
+</div>
+</div>
+
