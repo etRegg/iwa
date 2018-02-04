@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:9
 RUN mkdir /usr/src/app
 ENV foo /usr/src/app
 WORKDIR ${foo} 
@@ -10,11 +10,10 @@ RUN npm install --global bower
 COPY  prototype   /usr/src/app
 
    
-RUN npm install
-RUN echo '{ "allow_root": true }' > /root/.bowerrc
-RUN  bower --allow-root install 
 
-# Entrypoint.
+RUN echo '{ "allow_root": true }' > /root/.bowerrc
 ADD ./e.sh /root/entrypoint.sh
 RUN chmod +x /root/entrypoint.sh
 ENTRYPOINT ["/bin/bash", "/root/entrypoint.sh"]
+
+EXPOSE 3000
