@@ -12,12 +12,29 @@ function cleanArray(actual) {
 }
 
 campaining = [];
-var mainApp = angular.module("prototype", [ 'ui.router', 'ngResource' ,'froala']).
-value('froalaConfig', {
-	toolbarInline: false,
-	placeholderText: 'Edit Your Content Here!'
-})
-;
+var mainApp = angular.module("prototype", [  'ui.router',
+	  'ui.router.redirect', 'ngResource' ]);
+
+
+mainApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+    $urlRouterProvider
+    //any url that doesn't exist in routes redirect to '/'
+      .otherwise('/'); 
+
+     //Do other stuff here
+ })
+.run(function ($rootScope, $location, Auth) {
+// Redirect to login if route requires auth and you're not logged in
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+      Auth.isLoggedInAsync(function(loggedIn) {
+        if (toState.authenticate && !loggedIn) {
+              $rootScope.returnToState = toState.url;
+              $rootScope.returnToStateParams = toParams.Id;
+              $location.path('/list/1');
+          }
+      });
+    });
+});
 // angular.module('ng').filter('tel', function (){});
 mainApp.service('CampagningService', function($q, $resource, $timeout) {
 	// var $resource = initInjector.get('ngResource');
@@ -31,32 +48,7 @@ mainApp.service('CampagningService', function($q, $resource, $timeout) {
 		      method: 'DELETE'
 		    }
 	  });
-	var campagning = [ {
-		name : "Carrfour",
-		mail : "rodrigo@regg.com.ar",
-		phone : "1139141251",
-		text : "<h1>hola</h1>"
-	}, {
-		name : "LG",
-		mail : "pedro@regg.com.ar",
-		phone : "1139141251",
-		text : "<h1>hola</h1>"
-	}, {
-		name : "Philip",
-		mail : "juan@regg.com.ar",
-		phone : "1139141251",
-		text : "<h1>hola</h1>"
-	}, {
-		name : "MOTO G",
-		mail : "rafael@regg.com.ar",
-		phone : "1139141251",
-		text : "<h1>hola</h1>"
-	}, {
-		name : "Gomitas Mogul",
-		mail : "mozart@regg.com.ar",
-		phone : "1139141251",
-		text : "<h1>hola</h1>"
-	} ];
+	var campagning = [ ];
 	var editCampagning = null;
 	this.setOperationCampagning = function(contact) {
 		var deferred = $q.defer();
@@ -149,6 +141,71 @@ mainApp.service('CampagningService', function($q, $resource, $timeout) {
 
 });
 
+/////////////////////////////////////////////////
+
+
+mainApp.service('Auth', function($q, $resource, $timeout) {
+
+
+
+    this.token=null;
+
+    this.isLoggedInAsync = function (){
+    	
+    }
+
+
+	this.loguin = function(con) {
+		var deferred = $q.defer();
+		var d=$resource(
+		        "/api/v1/auth/login", 
+		        {}, 
+		        {
+		            create: { 
+		                method: "POST"//,
+		              //  isArray: true
+		            }
+		        }
+		    );
+		d.create(con).$promise.then(function(a) {
+			console.log(a.token);
+			//$location.path('/login');
+			deferred.resolve(a);
+
+		});
+		
+		return deferred.promise;
+		}
+
+
+	this.register = function(con) {
+		var deferred = $q.defer();
+		var d=$resource(
+		        "/api/v1/auth/register", 
+		        {}, 
+		        {
+		            create: { 
+		                method: "POST"//,
+		              //  isArray: true
+		            }
+		        }
+		    );
+		d.create(con).$promise.then(function(a) {
+			console.log(a.token);
+			//$location.path('/login');
+			deferred.resolve(a);
+
+		});
+
+	
+		
+		
+		return deferred.promise;
+		}
+	
+	
+
+});
 
 
 
@@ -158,10 +215,7 @@ mainApp.service('CampagningService', function($q, $resource, $timeout) {
 
 
 
-
-
-
-
+/////////////////////////////////////////////////////////////
 
 
 
@@ -230,7 +284,7 @@ mainApp.service('ContactService', function($q, $resource, $timeout) {
 		var User = $resource('/api/v1/contacts');
 		User.query().$promise.then(function(users) {
 			contact = users;
-
+			//$location.path('/login');
 			deferred.resolve(contact);
 
 		});
@@ -300,7 +354,7 @@ mainApp.service('ContactService', function($q, $resource, $timeout) {
 	
 });
 
-mainApp.controller('list', function($scope, $transition$,$location, ContactService) {
+mainApp.controller('list', function($scope, $transition,$location, ContactService) {
 	$scope.title = "My Contacts";
 	/*
 	 * if(!isNaN($transition$.params().acountId)){ if(contact.length==0){
@@ -466,20 +520,65 @@ mainApp.controller('campagning', function($scope, $transition$,$location, Campag
 	$scope.acount = 1;
 });
 
+/////////////////////////////////////////
+
+mainApp.controller('login', function($scope,$location,Auth) {
+	$scope.title = "Login";
+    $scope.login = function(){
+    	Auth.loguin($scope.dlogin).then(function(){
+    		console.log(Auth.token);
+    	});
+    	
+    };
+    $scope.dlogin={email:'',pass:''};
+	});
+mainApp.controller('register', function($scope,$location,Auth) {
+	$scope.title = "Register";
+    $scope.register = function(){
+    	
+    	Auth.register($scope.dlogin).then(function (data){
+    		Auth.token=data.token;
+    		$location.path('/list/1');
+    	});
+    };
+    $scope.dlogin={email:'',pass:''};
+	});
 
 
 
 
 
-
-
-
+////////////////////////////////////////////////////////////
 var initInjector = angular.injector([ 'ng' ]);
 
 mainApp.config([ '$stateProvider', '$urlRouterProvider',
 		function($stateProvider, $urlRouterProvider) {
 
 			var $http = initInjector.get('$http');
+			var getOut = function(index,state) {
+				var contents = null;
+				$http({
+					method : 'GET',
+					url : 'view/' + index + '.html'
+				}).then(function successCallback(response) {
+					if (response.status == 200) {
+						state.template = response.data;
+
+					} else {
+						state.template = '';
+					}
+
+				
+				}, function errorCallback(response) {
+
+				});
+				return contents;
+			}
+			
+			
+			
+			
+			
 			var get = function(index, state) {
 				var contents = null;
 				$http({
@@ -500,6 +599,22 @@ mainApp.config([ '$stateProvider', '$urlRouterProvider',
 				return contents;
 			}
 
+			
+			var registerState = {
+					name : 'register',
+					url:'register',
+					controller : 'register'
+				};
+			get('register',registerState);
+			
+			var loginState = {
+					name : 'login',
+					url:'login',
+					controller : 'login'
+				};
+			get('login',loginState);
+			
+			
 			var contactState = {
 				name : 'edit',
 				url : 'edit',
@@ -532,6 +647,10 @@ mainApp.config([ '$stateProvider', '$urlRouterProvider',
 			};
 			get('lc', lState)
 
+			  $stateProvider.state('h', {
+    url: '/',
+    redirectTo: 'login' // name of state to go 
+  });
 			//$urlRouterProvider.otherwise('list');
 
 		} ]);
