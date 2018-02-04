@@ -24,7 +24,7 @@ module.exports = {
 				
 				
 			}
-,'findOne':function (myobj){
+,'findOne':function (myobj,f){
 	var user=null;
 	MongoClient.connect(url, function(err, db) {
 		  if (err) throw err;
@@ -32,7 +32,8 @@ module.exports = {
 		  dbo.collection("Users").findOne(myobj, function(err, result) {
 		    if (err) throw err;
 		    console.log(result);
-		    user=result;
+		    
+		    f(err,result);
 		    db.close();
 		  });
 		});	
