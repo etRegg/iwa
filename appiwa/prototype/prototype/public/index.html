@@ -1,19 +1,24 @@
 <html>
   <head>
     <script src="js/angular/angular.js"></script>
-    <script src="js/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="rui/angular-ui-router.js"></script>
+    <script src="rui/redirect/ui.router.redirect.js"></script>
     <script type="text/javascript" src="js/angular-resource/angular-resource.js"></script>
 
   <script src="js/jquery/dist/jquery.min.js"></script>
 
-  <!-- Include Font Awesome. -->
-  <link href="js/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <!-- Include Font Awesome. 
+  
+    <link href="js/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  
+  -->
 
-	<!-- Include Froala Editor styles -->
+
+	<!-- Include Froala Editor styles 
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/froala_editor.min.css" />
-  <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/froala_style.min.css" />
+  <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/froala_style.min.css" />-->
 
-	<!-- Include Froala Editor Plugins styles -->
+	<!-- Include Froala Editor Plugins styles
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/char_counter.css">
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/code_view.css">
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/colors.css">
@@ -24,12 +29,12 @@
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/image.css">
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/line_breaker.css">
   <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/table.css">
-  <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/video.css">
+  <link rel="stylesheet" href="js/froala-wysiwyg-editor/css/plugins/video.css">  -->
 
-	<!-- Include Froala Editor -->
-  <script src="js/froala-wysiwyg-editor/js/froala_editor.min.js"></script>
+	<!-- Include Froala Editor 
+  <script src="js/froala-wysiwyg-editor/js/froala_editor.min.js"></script>-->
 
-	<!-- Include Froala Editor Plugins -->
+	<!-- Include Froala Editor Plugins 
   <script src="js/froala-wysiwyg-editor/js/plugins/align.min.js"></script>
   <script src="js/froala-wysiwyg-editor/js/plugins/char_counter.min.js"></script>
   <script src="js/froala-wysiwyg-editor/js/plugins/code_beautifier.min.js"></script>
@@ -52,14 +57,14 @@
   <script src="js/froala-wysiwyg-editor/js/plugins/quote.min.js"></script>
   <script src="js/froala-wysiwyg-editor/js/plugins/save.min.js"></script>
   <script src="js/froala-wysiwyg-editor/js/plugins/table.min.js"></script>
-  <script src="js/froala-wysiwyg-editor/js/plugins/video.min.js"></script>
+  <script src="js/froala-wysiwyg-editor/js/plugins/video.min.js"></script>-->
 	<!-- End Froala -->
 
   <script src="js/angular/angular.min.js"></script>
 
-  <script src="src/angular-froala.js"></script>
+  <!-- script src="src/angular-froala.js"></script>
    
-   
+ -->   
     <script src="main.js"></script>
 
 <link rel="stylesheet" type="text/css" href="js/bootstrap/dist/css/bootstrap.css"> 
@@ -69,7 +74,7 @@
   </head>
 
   <body ng-app="prototype">
- <a ui-sref="list({ acountId: 1 })" ui-sref-active="active">Log in</a>
+ <a ui-sref="login()" ui-sref-active="active">Log in</a> <a ui-sref="register()" ui-sref-active="active">Register</a>
     <ui-view ></ui-view>
 
     
