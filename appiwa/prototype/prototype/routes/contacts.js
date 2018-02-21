@@ -1,62 +1,108 @@
 var express = require('express');
 var router = express.Router();
 var uuid = require('uuid/v4');
+var filter = require('./service/filter');
+var config = require('./service/config');
 
-var contacts = []
-var contactsById = {};
-
-router.put('/:id', function(req, res, next) {
+router.put('/:id',filter.ensureAuthenticated, function(req, res, next) {
   var updatedContact = req.body;
   
-  var id = req.params["id"];    
-  var contact = contactsById[id];
-  if (contact) {
-      contact.name = updatedContact.name;
-      contact.mail = updatedContact.mail;
-      contact.phone = updatedContact.phone;
-      contact.sex = updatedContact.sex;
-      res.json(contact);
-  } else {
-      res.status(404).send("not found");
-  }
+  var ida = req.params["id"];
+  console.log(updateContact);
+console.log(ida);
+
+
+
+
+  var myquery = { id: ida };
+  var newvalues = { $set:updatedContact  };
+  config.DBO.collection("Contacts").updateOne(myquery, newvalues, function(err, result) {
+	  try{
+			if (err)throw err;
+		    res.json({id:ida});
+		    
+		   }catch(err){
+			   res.status(404).send("not found");
+		   }
+  });
+
+
 });
 
 
-router.get('/', function(req, res, next) {
-  res.json(contacts);
-});
 
-router.get('/:id', function(req, res, next) {
-  var id = req.params["id"];    
-  var contact = contactsById[id];
-  if (contact) {
-      res.json(contact);
-  } else {
-      res.status(404).send("not found");
-  }
-});
 
-router.delete('/:id', function(req, res, next) {
-  var id = req.params["id"];    
-  var contact = contactsById[id];
+
+
+router.get('/', filter.ensureAuthenticated, function(req, res, next) {
+    console.log(req.user);
+	config.DBO.collection("Contacts").find({}).toArray( function(err, result) {
+	  try{
+			if (err)throw err;
+		    res.json(result);
+		    
+		   }catch(err){
+			   res.status(404).send("not found");
+		   }
+   
+  });
+
+
+	
+	
   
-  if (contact) {
-      delete contactsById[id];
-      contacts.splice(contacts.indexOf(contact), 1)
-      res.json(contact);
-  } else {
-      res.status(404).send("not found");
-  }
+});
+
+router.get('/:id', filter.ensureAuthenticated,  function(req, res, next) {
+  var ida = req.params["id"];
+
+
   
+  config.DBO.collection("Contacts").findOne({id:ida}, function(err, result) {
+	  try{
+			if (err)throw err;
+		    res.json(result);
+		    
+		   }catch(err){
+			   res.status(404).send("not found");
+		   }
+   
+  });
+
+});
+
+router.delete('/:id', filter.ensureAuthenticated, function(req, res, next) {
+  var ida = req.params["id"];    
+ 
+  config.DBO.collection("Contacts").deleteOne({id:ida}, function(err, result) {
+	  try{
+			if (err)throw err;
+		    res.json(result);
+		    
+		   }catch(err){
+			   res.status(404).send("not found");
+		   }
+  });
+
 });
 
 
-router.post('/', function(req, res, next) {
+router.post('/', filter.ensureAuthenticated, function(req, res, next) {
   var contact = req.body;
   contact.id = uuid();
-  contacts.push(contact);
-  contactsById[contact.id] = contact;
-  res.send(contact);
+
+  
+  config.DBO.collection("Contacts").insertOne(contact, function(err, result) {
+	  try{
+			if (err)throw err;
+		    res.json(result);
+		    
+		   }catch(err){
+			   res.status(404).send("not found");
+		   }
+    
+  });
+
 });
 
 module.exports = router;

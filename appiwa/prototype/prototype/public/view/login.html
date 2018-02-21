@@ -1,4 +1,24 @@
-<div class="container-fluid"><div class="row"><div class="col-sm-7 col-md-8 sidebar">
+<div class="container-fluid"><div class="row">
+<div class="col-sm-3 col-md-2 sidebar">
+	<lu class="nav nav-sidebar" >
+
+	<li><a ui-sref="list"
+		ui-sref-active="active">List Contacts</a></li>
+
+	<li><a href="#">Campagning</a> <lu class="nav nav-sidebar">
+
+		<li><a ui-sref="listc"
+			ui-sref-active="active">List Campagning</a></li>
+		
+		<li><a ui-sref="editc"
+			ui-sref-active="active">View/add</a></li>
+		
+		<li><a ui-sref="sent"
+			ui-sref-active="active">Sent Campagning</a></li>
+		</lu></li>
+	</lu>
+</div>
+<div class="col-sm-7 col-md-8 sidebar">
 <h1>{{ title }}</h1>
 <ul class="nav navbar-nav navbar-right"> <li><a href="#" ng-click="login()">In </a></li></ul>
 <form>
@@ -11,7 +31,27 @@
 
 
 </form>
+<a ui-sref="list(acountId:1)" ui-sref-active="active">Welcome</a>
+</div>
+<div class="col-sm-7 col-md-8 sidebar">
+<h1>{{ titler }}</h1>
+<ul class="nav navbar-nav navbar-right"> <li><a href="#" ng-click="register()">Sing Up </a></li></ul>
+<form>
+<lavel class="input-group" >name:<input class="form-control" type="text" ng-model="rlogin.name" requeride /></lavel>
+<lavel class="input-group" >email:<input class="form-control" type="email" ng-model="rlogin.email" requeride /></lavel>
+<lavel class="input-group" >password:<input class="form-control" type="password" ng-model="rlogin.pass" requeride /></lavel>
+
+
+
+
+
+
+</form>
 
 </div>
 </div>
+
+
+
+
 </div>

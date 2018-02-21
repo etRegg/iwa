@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "initMongo": "node ./bin/mongo",
+    "initMongo": "node ./bin/www",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
     "express": "~4.13.1",
     "jsonwebtoken": "^8.1.1",
     "mongodb": "^3.0.2",
+    "nodemailer": "^4.4.2",
     "uuid": "^3.1.0"
   }
 }

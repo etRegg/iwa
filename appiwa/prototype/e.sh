@@ -1,2 +1,2 @@
-npm run  initMongo
+npm run initMongo
 npm start run 
