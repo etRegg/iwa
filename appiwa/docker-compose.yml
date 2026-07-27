@@ -2,9 +2,7 @@
   mongoserver:
     build: "mongo/"
     hostname: "mongoserver"
-  
-      
-      
+
   node1:
     build: "prototype/"
     hostname: "node1"
@@ -12,26 +10,21 @@
        - ./prototype/prototype:/usr/src/app
 
 
-   
+
 
     links:
-        - mongoserver   
-     
-  
+        - mongoserver
+
 
   node2:
     build: "prototype/"
     hostname: "node2"
     volumes:
        - ./prototype/prototype:/usr/src/app
-       
-  
-         
+
     links:
-        - mongoserver  
-   
- 
-   
+        - mongoserver
+
 
   balancer:
     hostname: "balancer.net"
