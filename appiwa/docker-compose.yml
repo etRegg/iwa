@@ -1,46 +1,35 @@
-
+services:
   mongoserver:
-    build: "mongo/"
-    hostname: "mongoserver"
-  
-      
-      
+   image: mongo:8
+   #restart: unless-stopped
+   #volumes:
+   # - mongo-data:/data/db
+   ports:
+     - "27017:27017"
+
   node1:
     build: "prototype/"
     hostname: "node1"
     volumes:
        - ./prototype/prototype:/usr/src/app
-
-
-   
-
-    links:
-        - mongoserver   
-     
-  
-
+    depends_on:
+        - mongoserver
   node2:
     build: "prototype/"
     hostname: "node2"
     volumes:
        - ./prototype/prototype:/usr/src/app
-       
-  
-         
-    links:
-        - mongoserver  
-   
- 
-   
-
+    depends_on:
+        - mongoserver
   balancer:
     hostname: "balancer.net"
     image: "nginx"
+    ports:
+       - "8033:80"
+       - "8031:443"
     volumes:
       - ./nginx/:/etc/nginx:ro
       - ./ssl/:/etc/ssl:ro
-    links:
+    depends_on:
         - node1
         - node2
-
-

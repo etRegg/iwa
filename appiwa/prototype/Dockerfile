@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:20
 RUN mkdir /usr/src/app
 ENV foo /usr/src/app
 WORKDIR ${foo} 
